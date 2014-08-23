@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <receiver
-            android:name=".AutoRotationWidget"
+            android:name="com.enghqii.autorotationwidget.AutoRotationWidget"
             android:label="@string/app_name" >
             <meta-data
                 android:name="android.appwidget.provider"
@@ -21,6 +21,7 @@
 
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.enghqii.widget.ACTION_EVENT" />
             </intent-filter>
         </receiver>
     </application>
