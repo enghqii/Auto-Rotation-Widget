@@ -1,4 +1,4 @@
-package com.enghqii.autorotationwidget;
+package com.enghqii.autorotatewidget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,13 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
-public class AutoRotationWidget extends AppWidgetProvider {
+public class AutoRotateWidget extends AppWidgetProvider {
 
 	public static final String ACTION_EVENT = "com.enghqii.widget.ACTION_EVENT";
 
-	public AutoRotationWidget() {
+	public AutoRotateWidget() {
 
 	}
 
@@ -33,7 +32,7 @@ public class AutoRotationWidget extends AppWidgetProvider {
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			this.onUpdate(context, AppWidgetManager.getInstance(context),
 					manager.getAppWidgetIds(new ComponentName(context,
-							AutoRotationWidget.class)));
+							AutoRotateWidget.class)));
 		}
 	}
 
