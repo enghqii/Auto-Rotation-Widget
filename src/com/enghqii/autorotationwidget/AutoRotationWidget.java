@@ -3,6 +3,7 @@ package com.enghqii.autorotationwidget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +26,14 @@ public class AutoRotationWidget extends AppWidgetProvider {
 		String action = intent.getAction();
 
 		if (ACTION_EVENT.equals(action)) {
+			
 			this.onButtonClick(context);
+
+			// to call 'onUpdate'
+			AppWidgetManager manager = AppWidgetManager.getInstance(context);
+			this.onUpdate(context, AppWidgetManager.getInstance(context),
+					manager.getAppWidgetIds(new ComponentName(context,
+							AutoRotationWidget.class)));
 		}
 	}
 
@@ -38,10 +46,20 @@ public class AutoRotationWidget extends AppWidgetProvider {
 		RemoteViews remoteView = new RemoteViews(context.getPackageName(),
 				R.layout.widget_design);
 
-		// let 'button1' send pendingIntent
+		// let 'linearBtn' send pendingIntent
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
 				new Intent(ACTION_EVENT), 0);
-		remoteView.setOnClickPendingIntent(R.id.button1, pendingIntent);
+		
+		remoteView.setOnClickPendingIntent(R.id.imageView, pendingIntent);
+
+		// set Background Image
+		if (getAutoOrientationEnabled(context.getContentResolver())) {
+			remoteView.setImageViewResource(R.id.imageView,
+					R.drawable.auto_rotation_on);
+		} else {
+			remoteView.setImageViewResource(R.id.imageView,
+					R.drawable.auto_rotation_off);
+		}
 
 		appWidgetManager.updateAppWidget(appWidgetIds, remoteView);
 	}
@@ -50,19 +68,23 @@ public class AutoRotationWidget extends AppWidgetProvider {
 
 		ContentResolver resolver = context.getContentResolver();
 
-		if (android.provider.Settings.System.getInt(resolver,
-				Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+		if (getAutoOrientationEnabled(resolver)) {
 			// auto-rotation is Enabled
 			
 			setAutoOrientationEnabled(resolver, false);
-			Toast.makeText(context, "DISABLED", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, "DISABLED", Toast.LENGTH_SHORT).show();
 
 		} else {
 			
 			setAutoOrientationEnabled(resolver, true);
-			Toast.makeText(context, "ENABLED", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, "ENABLED", Toast.LENGTH_SHORT).show();
 
 		}
+	}
+	
+	public boolean getAutoOrientationEnabled(ContentResolver resolver){
+		return android.provider.Settings.System.getInt(resolver,
+				Settings.System.ACCELEROMETER_ROTATION, 0) == 1;
 	}
 
 	public void setAutoOrientationEnabled(ContentResolver resolver,
