@@ -26,4 +26,7 @@
         </receiver>
     </application>
 
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" >
+    </uses-permission>
+
 </manifest>
